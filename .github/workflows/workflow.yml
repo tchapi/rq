@@ -15,12 +15,14 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
-    - uses: docker/build-push-action@v2
+    - name: Build the Docker test image for tox
+      uses: docker/build-push-action@v2
       with:
         file: tests/Dockerfile
         tags: rqtest-image:latest
         push: false
-    - uses: addnab/docker-run-action@v3
+    - name: Launch tox for all test scenarii
+      uses: addnab/docker-run-action@v3
       with:
         image: rqtest-image:latest
         run: stunnel & redis-server & RUN_SLOW_TESTS_TOO=1 RUN_SSL_TESTS=1 tox
